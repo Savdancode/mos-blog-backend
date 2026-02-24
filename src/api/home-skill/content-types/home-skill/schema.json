@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "home_skills",
+  "info": {
+    "singularName": "home-skill",
+    "pluralName": "home-skills",
+    "displayName": "Home Skill"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "shortDescription": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "kind": "collectionType",
+  "kind": "singleType",
   "collectionName": "homes",
   "info": {
     "singularName": "home",
@@ -11,17 +11,22 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "Tag": {
+      "type": "string",
+      "required": true
+    },
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
-    "description": {
-      "type": "text"
+    "shortDescription": {
+      "type": "string",
+      "required": true
     },
-    "skills": {
-      "type": "json"
-    },
-    "tag": {
-      "type": "string"
+    "home_skills": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::home-skill.home-skill"
     }
   }
 }
