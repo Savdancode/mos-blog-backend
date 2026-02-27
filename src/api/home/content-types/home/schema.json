@@ -27,6 +27,22 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::home-skill.home-skill"
+    },
+    "popular_blogs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::blog.blog"
+    },
+    "slogan": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::slogan.slogan"
+    },
+    "footerTitle": {
+      "type": "string"
+    },
+    "footerShortDes": {
+      "type": "string"
     }
   }
 }

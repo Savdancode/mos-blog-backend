@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "slogans",
+  "info": {
+    "singularName": "slogan",
+    "pluralName": "slogans",
+    "displayName": "Slogan"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "shortDescription": {
+      "type": "text"
+    }
+  }
+}

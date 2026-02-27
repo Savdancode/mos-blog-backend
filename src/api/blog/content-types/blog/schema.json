@@ -15,10 +15,6 @@
       "type": "string",
       "required": true
     },
-    "description": {
-      "type": "text",
-      "required": true
-    },
     "image": {
       "type": "media",
       "multiple": true,
@@ -26,6 +22,21 @@
         "images",
         "files"
       ]
+    },
+    "content": {
+      "type": "blocks",
+      "required": true
+    },
+    "tags": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tag.tag",
+      "mappedBy": "blog"
+    },
+    "categorie_posts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::categorie-post.categorie-post"
     }
   }
 }

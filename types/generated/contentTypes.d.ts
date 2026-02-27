@@ -470,7 +470,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiAboutAbout extends Struct.SingleTypeSchema {
   collectionName: 'abouts';
   info: {
-    displayName: 'about';
+    displayName: 'About';
     pluralName: 'abouts';
     singularName: 'about';
   };
@@ -503,15 +503,20 @@ export interface ApiBlogBlog extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    categorie_posts: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::categorie-post.categorie-post'
+    >;
+    content: Schema.Attribute.Blocks & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.Text & Schema.Attribute.Required;
     image: Schema.Attribute.Media<'images' | 'files', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::blog.blog'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    tags: Schema.Attribute.Relation<'oneToMany', 'api::tag.tag'>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -519,12 +524,13 @@ export interface ApiBlogBlog extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
-  collectionName: 'categories';
+export interface ApiCategoriePostCategoriePost
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'categorie_posts';
   info: {
-    displayName: 'Category';
-    pluralName: 'categories';
-    singularName: 'category';
+    displayName: 'CategoriesPost';
+    pluralName: 'categorie-posts';
+    singularName: 'categorie-post';
   };
   options: {
     draftAndPublish: true;
@@ -533,16 +539,16 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.String;
-    icon: Schema.Attribute.Media<'images' | 'files'>;
+    icon: Schema.Attribute.Media<'images' | 'files', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::category.category'
+      'api::categorie-post.categorie-post'
     > &
       Schema.Attribute.Private;
-    name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
+    shortDescription: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -552,7 +558,7 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
 export interface ApiContactContact extends Struct.CollectionTypeSchema {
   collectionName: 'contacts';
   info: {
-    displayName: 'contact';
+    displayName: 'Contact';
     pluralName: 'contacts';
     singularName: 'contact';
   };
@@ -623,6 +629,8 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    footerShortDes: Schema.Attribute.String;
+    footerTitle: Schema.Attribute.String;
     home_skills: Schema.Attribute.Relation<
       'oneToMany',
       'api::home-skill.home-skill'
@@ -630,9 +638,40 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::home.home'> &
       Schema.Attribute.Private;
+    popular_blogs: Schema.Attribute.Relation<'oneToMany', 'api::blog.blog'>;
     publishedAt: Schema.Attribute.DateTime;
     shortDescription: Schema.Attribute.String & Schema.Attribute.Required;
+    slogan: Schema.Attribute.Relation<'oneToOne', 'api::slogan.slogan'>;
     Tag: Schema.Attribute.String & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSloganSlogan extends Struct.CollectionTypeSchema {
+  collectionName: 'slogans';
+  info: {
+    displayName: 'Slogan';
+    pluralName: 'slogans';
+    singularName: 'slogan';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::slogan.slogan'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    shortDescription: Schema.Attribute.Text;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -651,9 +690,11 @@ export interface ApiTagTag extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    blog: Schema.Attribute.Relation<'manyToOne', 'api::blog.blog'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    description: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::tag.tag'> &
       Schema.Attribute.Private;
@@ -1179,10 +1220,11 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::about.about': ApiAboutAbout;
       'api::blog.blog': ApiBlogBlog;
-      'api::category.category': ApiCategoryCategory;
+      'api::categorie-post.categorie-post': ApiCategoriePostCategoriePost;
       'api::contact.contact': ApiContactContact;
       'api::home-skill.home-skill': ApiHomeSkillHomeSkill;
       'api::home.home': ApiHomeHome;
+      'api::slogan.slogan': ApiSloganSlogan;
       'api::tag.tag': ApiTagTag;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
