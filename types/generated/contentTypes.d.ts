@@ -486,6 +486,8 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::about.about'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    tags: Schema.Attribute.Relation<'oneToMany', 'api::tag.tag'>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -558,7 +560,7 @@ export interface ApiCategoriePostCategoriePost
 export interface ApiContactContact extends Struct.CollectionTypeSchema {
   collectionName: 'contacts';
   info: {
-    displayName: 'Contact';
+    displayName: 'Contact Alert';
     pluralName: 'contacts';
     singularName: 'contact';
   };
